@@ -30,7 +30,7 @@ const data = [
     {
         title: "Magic",
         taps: ["Ability Haste", "Mana", "Mana Regen", "Ability Power", "Heal & Shield", "Power"],
-        color: "#12bdbb;",
+        color: "#12bdbb",
         background: "#223148",
     },
     {
