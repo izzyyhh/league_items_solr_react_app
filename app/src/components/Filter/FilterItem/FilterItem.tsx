@@ -13,7 +13,7 @@ const FilterItem: FunctionComponent<Item> = ({ title, taps, color, background })
     return (
         <FilterItemWrapper background={background} color={color} >
             <Title>{title}</Title>
-            {taps.map((item) => <Tag tag={item} />)}
+            {taps.map((item, idx) => <Tag key={idx} tag={item} />)}
         </FilterItemWrapper>
     );
 };

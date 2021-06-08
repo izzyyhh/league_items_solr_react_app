@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent} from "react";
 import { Filters, FilterWrapper, Label, LabelField } from "./Filter.sc";
 import FilterItem from "./FilterItem/FilterItem";
 
@@ -49,7 +49,7 @@ const Filter: FunctionComponent = () => {
                 <Label>Filters</Label>
             </LabelField>
             <Filters>
-                {data.map((item, idx) => <FilterItem title={item.title} taps={item.taps} color={item.color} background={item.background}/>)}
+                {data.map((item, idx) => <FilterItem key={idx} title={item.title} taps={item.taps} color={item.color} background={item.background}/>)}
             </Filters>
         </FilterWrapper>
     );

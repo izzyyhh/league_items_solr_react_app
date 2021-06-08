@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useContext, useEffect, useState } from "react";
+import { ItemsContext } from "../../../../hooks/useItems/useItems";
 import { Label, TagWrapper} from "./Tag.sc";
 
 interface Props {
@@ -7,9 +8,16 @@ interface Props {
 
 const Tag: FunctionComponent<Props> = ({ tag }) => {
     const [checked, setChecked] = useState(false);
-    if (checked) {
-        console.log(tag);
-    }
+    const { addItem, removeItem } = useContext(ItemsContext);
+
+    useEffect(() => {
+        if (checked) {
+            addItem(tag);
+        } else {
+            removeItem(tag);
+        }
+    }, [checked]);
+
     return (
         <TagWrapper className={checked ? "active" : ""}>
             <Label onClick={() => setChecked(!checked)}>{tag}</Label>
