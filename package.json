@@ -17,10 +17,5 @@
         "type": "git",
         "url": "https://gitlab.mediacube.at/vpm/test_fullsetup.git"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "license": "UNLICENSED"
 }

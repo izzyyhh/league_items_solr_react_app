@@ -1,7 +1,9 @@
 import { InputAdornment } from "@material-ui/core";
-import React, { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
+import { ItemsContext } from "../../hooks/useItems/useItems";
+import React, { ChangeEvent, FormEvent, FunctionComponent, useState, useContext } from "react";
 import { Label, SearchWrapper, TextField } from "./Search.sc";
 import SearchIcon from "@material-ui/icons/Search";
+import { SettingsSystemDaydreamTwoTone } from "@material-ui/icons";
 
 const solrURL = "http://localhost:8983/solr/lol";
 const NAME_FIELD = "name_t";
@@ -9,13 +11,42 @@ const PLAINTEXT_FIELD = "plaintext_txt_en";
 const GOLD_FIELD = "gold_i";
 const TAGS_FIELD = "tags";
 
-const Search: FunctionComponent = () => {
-    const [search, setSearch] = useState("");
+interface Props {
+    setData: (item: any) => void
+}
+
+const Search: FunctionComponent<Props> = ({ setData }) => {
+    const {filter} = useContext(ItemsContext);
+    const [search, setSearch] = useState("*:*");
+
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         console.log("Submit", search);
         console.log("search result is:")
-        itemSearch(search);
+        console.log("from search" + getString(filter));
+
+        if(search === "") setSearch("*:*"); 
+        console.log("after if", search);
+        const data = itemSearch(search, getString(filter))
+        console.log("from submit");
+
+        data.then(res => {
+            if(res.response.numFound === 0) {
+                // do spellcheck, suggestion
+                const suggestion = getSuggestion(search);
+                suggestion.then(sug => {
+                    if(sug) {
+                        const newData = itemSearch(sug, getString(filter));
+                        newData.then(newRes => {
+                            if(newRes.response.numFound != 0) setData(newRes.response.docs);
+                        })
+                    }
+                })
+
+            }else {
+                setData(res.response.docs);
+            }
+        })
     }
     return(
         <SearchWrapper onSubmit={handleSubmit}>
@@ -25,25 +56,45 @@ const Search: FunctionComponent = () => {
     );
 };
 
-const itemSearch = async (query: String, start: Number = 0, rows: Number = 10) => {
-    console.log(query)
-    return await postSolrRequest("select", {
+const itemSearch = (query: String, filter: String, start: Number = 0, rows: Number = 221) => {
+    return postSolrRequest("select", {
         params: {
             fl: "*,score",
-            /* TODO: Put further common query parameters (https://lucene.apache.org/solr/guide/common-query-parameters.html) here. */
+            fq: `${filter}`,
+            start,
+            rows
         },
         query: {
             edismax: {
                 query,
-                qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`
-                /* TODO: Put further edismax query parameters (https://lucene.apache.org/solr/guide/8_5/the-extended-dismax-query-parser.html) here. */
+                qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`,
+                mm: "60%"
             },
         },
-
     });
 }
 
-const postSolrRequest = async (url: String, body: Object) => {
+const getSuggestion = async (query: String) => {
+    const response = await postSolrRequest("spell", {
+        params: {
+            wt: "json",
+            q: query,
+            spellcheck: "on",
+        }
+    });
+
+    try {
+
+        const suggestion = response.spellcheck.suggestions[1].suggestion[0].word;
+        
+        if(suggestion) return suggestion;
+        return false;
+    } catch {
+        console.log("hui");
+    }
+}
+
+const postSolrRequest = async (url:String, body: Object) => {
     const jsonResponse = await fetch(`${solrURL}/${url}`, {
         method: "POST",
         body: JSON.stringify(body),
@@ -56,8 +107,24 @@ const postSolrRequest = async (url: String, body: Object) => {
     }
 
     const response = await jsonResponse.json();
-    console.log(response.response)
-    return response.response;
+    const result = response;
+    return result;
 }
+
+const getString = (words: Array<string>) => {
+    let output = "";
+    words.forEach((word, idx) => {
+        word = word
+            .replace(/\s/g, "")
+            .replace("&", "");
+
+        if (idx > 0) {
+            output += ` AND tags:${word}`;
+        } else {
+            output += `tags:${word}`;
+        }
+    });
+    return output;
+};
 
 export default Search;

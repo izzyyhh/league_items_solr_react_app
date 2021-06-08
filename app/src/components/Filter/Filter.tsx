@@ -5,13 +5,13 @@ import FilterItem from "./FilterItem/FilterItem";
 const data = [
     {
         title: "Starter Items",
-        taps: ["Jungling", "Laning"],
+        taps: ["Jungle", "Lane"],
         color: "#007236",
         background: "#223148",
     },
     {
         title: "Tools",
-        taps: ["Consumable", "Gold Income", "Vision & Trinket" ],
+        taps: ["Consumable", "GoldPer", "Vision & Trinket" ],
         color: "#c06bdc",
         background: "#19283f",
     },
@@ -23,7 +23,7 @@ const data = [
     },
     {
         title: "Attack",
-        taps: ["Attack Speed", "Crtical Strike", "Damage", "Life Steal", "Lethality" ],
+        taps: ["Attack Speed", "Critical Strike", "Damage", "Life Steal", "Lethality" ],
         color: "#fe5752",
         background: "#19283f",
     },

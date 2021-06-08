@@ -14,7 +14,10 @@ const OutputItem: FunctionComponent<Props> = ({ item }) => {
             <TitleWrapper>
                 <Title>{item.name_t}</Title>
                 <Badges>
-                    {item.tags.map((tag, idx) => <Badge key={idx} tag={tag} />)}
+                    {
+                    item.tags &&     
+                    item.tags.map((tag, idx) => <Badge key={idx} tag={tag} />)
+                    }
                 </Badges>
             </TitleWrapper>
             <Gold>{item.gold_i}</Gold>

@@ -5,11 +5,11 @@ interface Props {
     tag: string;
 }
 
-const start = ["Jungling", "Laning"];
-const tools = ["Consumable", "Gold Income", "Vision & Trinket" ];
-const defense = ["Armor", "Health", "Health Regen", "Magic Resist", "Omni Vamp"];
-const attack = ["Attack Speed", "Crtical Strike", "Damage", "Life Steal", "Lethality" ];
-const magic = ["Ability Haste", "Mana", "Mana Regen", "Ability Power", "Heal & Shield", "Power"];
+const start = ["Jungle", "Lane"];
+const tools = ["Consumable", "GoldPer", "VisionTrinket" ];
+const defense = ["Armor", "Health", "HealthRegen", "MagicResist", "OmniVamp", "SpellBlock"];
+const attack = ["AttackSpeed", "CriticalStrike", "Damage", "LifeSteal", "Lethality", "SpellVamp", "OnHit"];
+const magic = ["AbilityHaste", "Mana", "ManaRegen", "AbilityPower", "HealShield", "Power", "SpellDamage"];
 const movement = ["Boots", "Other Movement"];
 
 const checkStart = (tag: string) => {
