@@ -18,6 +18,9 @@ export const TextField = styled(MUITextField)`
     && {
         margin-top: auto;
         margin-bottom: auto;
+        input {
+            color: white;
+        }
         svg {
             fill: white;
         }
