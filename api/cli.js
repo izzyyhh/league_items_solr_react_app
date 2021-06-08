@@ -1,4 +1,4 @@
-import Solr, { TITLE_FIELD } from "./solr";
+import Solr, { NAME_FIELD } from "./solr";
 import glob from "glob";
 
 const readline = require("readline");
@@ -32,7 +32,7 @@ rl.on("line", async (line) => {
     console.log(`Found ${results.numFound} results, showing top 5\n`);
 
     for (const result of results.docs.slice(0, 5)) {
-        console.log(`${result[TITLE_FIELD]}: ${result.score}`);
+        console.log(`${result[NAME_FIELD]}: ${result.score}`);
     }
 
     rl.prompt();
