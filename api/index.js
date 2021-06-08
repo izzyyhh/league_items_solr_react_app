@@ -3,13 +3,13 @@ import Solr, { TITLE_FIELD } from "./solr";
 
 require("@babel/register");
 
-const solrUrl = process.env.SOLR_URL || "http://localhost:8983/solr/simplewiki";
+const solrUrl = process.env.SOLR_URL || "http://localhost:8983/solr/lol";
 
 (async () => {
     const solr = new Solr(solrUrl);
 
     try {
-        await solr.import(glob.sync("corpus/*.txt"), false);
+        await solr.import(glob.sync("item.json"), false);
     } catch (e) {
         console.error(e);
         process.exit(1);
