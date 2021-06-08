@@ -1,4 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
+import { BasicLayoutWrapper } from "./BasicLayout.sc";
 
 interface Props {
     children?: ReactNode;
@@ -6,10 +7,9 @@ interface Props {
 
 const BasicLayout: FunctionComponent<Props> = ({ children }) => {
     return (
-        <>
-            <p>Test</p>
+        <BasicLayoutWrapper>
             {children}
-        </>
+        </BasicLayoutWrapper>
     )
 }
 
