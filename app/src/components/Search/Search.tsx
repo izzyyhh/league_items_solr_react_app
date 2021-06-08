@@ -1,13 +1,18 @@
 import { InputAdornment } from "@material-ui/core";
-import React, { FunctionComponent } from "react";
+import React, { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
 import { Label, SearchWrapper, TextField } from "./Search.sc";
 import SearchIcon from "@material-ui/icons/Search";
 
 const Search: FunctionComponent = () => {
+    const [search, setSearch] = useState("");
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        console.log("Submit", search);
+    }
     return(
-        <SearchWrapper>
+        <SearchWrapper onSubmit={handleSubmit}>
             <Label>Search</Label>
-            <TextField variant="outlined" InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>)}} />
+            <TextField onChange={(event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)} variant="outlined" InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>)}} />
         </SearchWrapper>
     );
 };

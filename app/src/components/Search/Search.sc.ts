@@ -1,7 +1,7 @@
 import { TextField as MUITextField } from "@material-ui/core";
 import styled from "styled-components";
 
-export const SearchWrapper = styled.div`
+export const SearchWrapper = styled.form`
     border: 10px solid #152034;
     display: flex;
     margin-top: 75px;
