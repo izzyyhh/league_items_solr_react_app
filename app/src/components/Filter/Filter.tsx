@@ -4,13 +4,44 @@ import FilterItem from "./FilterItem/FilterItem";
 
 const data = [
     {
-        title: "Test",
-        taps: { item: "item1"},
-        color: "#fffff",
-    }
-]
+        title: "Starter Items",
+        taps: ["Jungling", "Laning"],
+        color: "#007236",
+        background: "#223148",
+    },
+    {
+        title: "Tools",
+        taps: ["Consumable", "Gold Income", "Vision & Trinket" ],
+        color: "#c06bdc",
+        background: "#19283f",
+    },
+    {
+        title: "Defense",
+        taps: ["Armor", "Health", "Health Regen", "Magic Resist", "Omni Vamp"],
+        color: "#f0ae06",
+        background: "#223148",
+    },
+    {
+        title: "Attack",
+        taps: ["Attack Speed", "Crtical Strike", "Damage", "Life Steal", "Lethality" ],
+        color: "#fe5752",
+        background: "#19283f",
+    },
+    {
+        title: "Magic",
+        taps: ["Ability Haste", "Mana", "Mana Regen", "Ability Power", "Heal & Shield", "Power"],
+        color: "#12bdbb;",
+        background: "#223148",
+    },
+    {
+        title: "Movement",
+        taps: ["Boots", "Other Movement"],
+        color: "#98b3dd",
+        background: "#19283f",
+    },
+];
+
 const Filter: FunctionComponent = () => {
-    data.map((item) => console.log(item));
     return (
         <FilterWrapper>
             <LabelField>
@@ -18,9 +49,7 @@ const Filter: FunctionComponent = () => {
                 <Label>Filters</Label>
             </LabelField>
             <Filters>
-                {data.map((item) => {
-                    <FilterItem title={item.title} taps={item.taps} color={item.color} />
-                })}
+                {data.map((item, idx) => <FilterItem title={item.title} taps={item.taps} color={item.color} background={item.background}/>)}
             </Filters>
         </FilterWrapper>
     );

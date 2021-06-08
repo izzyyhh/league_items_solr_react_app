@@ -1,20 +1,19 @@
 import React, { FunctionComponent } from "react";
-import { FilterItemWrapper } from "./FilterItem.sc";
+import { FilterItemWrapper, Title } from "./FilterItem.sc";
+import Tag from "./Tag/Tag";
 
 interface Item {
     title: string;
-    taps: { item: string };
-    color: string;
+    taps: Array<string>;
+    color?: string;
+    background: string;
 }
 
-const FilterItem: FunctionComponent<Item> = ({ title, taps, color }) => {
-    console.log("Hello World");
+const FilterItem: FunctionComponent<Item> = ({ title, taps, color, background }) => {
     return (
-        <FilterItemWrapper>
-            <p>Item</p>
-            {title}
-            {taps}
-            {color}
+        <FilterItemWrapper background={background} color={color} >
+            <Title>{title}</Title>
+            {taps.map((item) => <Tag tag={item} />)}
         </FilterItemWrapper>
     );
 };
