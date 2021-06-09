@@ -10,6 +10,8 @@ cd solr-8.8.2/
 ./bin/solr create -c lol
 ```
 4. Create new MULTIVALUED field called 'tags'
+5. Enable CORS in Apache Solr -> web.xml
+6. Configure spellcheck -> solrconf.xml
 
 # Format code
 
