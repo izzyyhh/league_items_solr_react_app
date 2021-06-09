@@ -58,17 +58,17 @@ export default class Solr {
         });
     }
 
+    // IMPORTANT, this search is not being used in the frontend!
+    // IMPORTANT, this search is not being used in the frontend!
     async search(query, start = 0, rows = 10) {
         return await this.postSolrRequest("select", {
             params: {
                 fl: "*,score",
-                /* TODO: Put further common query parameters (https://lucene.apache.org/solr/guide/common-query-parameters.html) here. */
             },
             query: {
                 edismax: {
                     query,
-                    qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`
-                    /* TODO: Put further edismax query parameters (https://lucene.apache.org/solr/guide/8_5/the-extended-dismax-query-parser.html) here. */
+                    qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`,
                 },
             },
         });
