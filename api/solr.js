@@ -1,35 +1,44 @@
 import fetch from "node-fetch";
+import fs from "fs";
 
-/* TODO: Configure which field names Solr should use for title and text. */
-export const TITLE_FIELD = "";
-export const TEXT_FIELD = "";
+export const NAME_FIELD = "name_t";
+export const PLAINTEXT_FIELD = "plaintext_txt_en";
+export const GOLD_FIELD = "gold_i";
+export const TAGS_FIELD = "tags";
 
 export default class Solr {
-    constructor(solrUrl = "http://localhost:8983/solr/simplewiki") {
+    constructor(solrUrl = "http://localhost:8983/solr/lol") {
         this.solrUrl = solrUrl;
     }
 
-    async import(filenames, deleteAll = false) {
+    async import(json, deleteAll = false) {
         if (deleteAll) {
             await this.deleteAll();
         }
 
-        for (const filename of filenames) {
-            /* TODO: Get a unique and stable ID for this document, ie. no random values + based on the document somehow */
-            const id = "";
-            const title = ""; /* TODO: Get the human-readable title for this document. */
-            const text = ""; /* TODO: Get the text for this document. */
+        const jsonContent = fs.readFileSync(json[0]);
+        const itemsData = JSON.parse(jsonContent).data;
 
-            await this.addDocument(id, this.buildDocument(title, text));
+        for (let itemId in itemsData) {
+            const item = itemsData[itemId];
+            const name = item.name;
+            const gold = item.gold.base;
+            const plaintext = item.plaintext;
+            const tags = item.tags;
+
+            await this.addDocument(itemId, this.buildDocument(name, plaintext, gold, tags));
         }
 
         await this.commit();
     }
 
-    buildDocument(title, text) {
+    buildDocument(name, plaintext, gold, tags) {
         const document = {};
-        document[TITLE_FIELD] = title;
-        document[TEXT_FIELD] = text;
+        document[NAME_FIELD] = name;
+        document[PLAINTEXT_FIELD] = plaintext;
+        document[GOLD_FIELD] = gold;
+        document[TAGS_FIELD] = tags;
+
         return document;
     }
 
@@ -49,16 +58,17 @@ export default class Solr {
         });
     }
 
+    // IMPORTANT, this search is not being used in the frontend!
+    // IMPORTANT, this search is not being used in the frontend!
     async search(query, start = 0, rows = 10) {
         return await this.postSolrRequest("select", {
             params: {
                 fl: "*,score",
-                /* TODO: Put further common query parameters (https://lucene.apache.org/solr/guide/common-query-parameters.html) here. */
             },
             query: {
                 edismax: {
                     query,
-                    /* TODO: Put further edismax query parameters (https://lucene.apache.org/solr/guide/8_5/the-extended-dismax-query-parser.html) here. */
+                    qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`,
                 },
             },
         });
