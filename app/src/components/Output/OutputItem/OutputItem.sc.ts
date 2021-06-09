@@ -8,6 +8,7 @@ export const Item = styled.div`
 `;
 
 export const Image = styled.img`
+    height: 62px;
     margin-right: 10px;
 `;
 

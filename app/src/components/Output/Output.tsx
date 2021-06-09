@@ -20,8 +20,6 @@ const getString = (words: Array<string>) => {
 };
 
 const Output: FunctionComponent<Props> = ({data}) => {
-    const {filter} = useContext(ItemsContext);
-    console.log(getString(filter));
     return (
         <OutputWrapper>
             {data?.map((item: any) => <OutputItem item={item} />)}

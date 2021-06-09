@@ -6,4 +6,6 @@ export const TagWrapper = styled.div`
     }
 `;
 
-export const Label = styled.p``;
+export const Label = styled.p`
+    cursor: pointer;
+`;

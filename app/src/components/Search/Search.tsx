@@ -21,14 +21,9 @@ const Search: FunctionComponent<Props> = ({ setData }) => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        console.log("Submit", search);
-        console.log("search result is:")
-        console.log("from search" + getString(filter));
 
         if(search === "") setSearch("*:*"); 
-        console.log("after if", search);
-        const data = itemSearch(search, getString(filter))
-        console.log("from submit");
+        const data = itemSearch(search, getString(filter));
 
         data.then(res => {
             if(res.response.numFound === 0) {
@@ -90,7 +85,6 @@ const getSuggestion = async (query: String) => {
         if(suggestion) return suggestion;
         return false;
     } catch {
-        console.log("hui");
     }
 }
 
