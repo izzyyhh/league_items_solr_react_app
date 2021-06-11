@@ -28,15 +28,21 @@ const Search: FunctionComponent<Props> = ({ setData }) => {
         data.then(res => {
             if(res.response.numFound === 0) {
                 // do spellcheck, suggestion
-                const suggestion = getSuggestion(search);
-                suggestion.then(sug => {
-                    if(sug) {
-                        const newData = itemSearch(sug, getString(filter));
-                        newData.then(newRes => {
-                            if(newRes.response.numFound != 0) setData(newRes.response.docs);
-                        })
-                    }
-                })
+                const suggestion = getSuggestion(search, setData);
+
+                if(suggestion) {
+                    suggestion.then(sug => {
+                        if(sug) {
+                            const newData = itemSearch(sug, getString(filter));
+                            newData.then(newRes => {
+                                if(newRes.response.numFound != 0) setData(newRes.response.docs);
+                                else setData([])
+                            })
+                        }
+                    })
+                } else {
+                    setData([])
+                }
 
             }else {
                 setData(res.response.docs);
@@ -63,13 +69,13 @@ const itemSearch = (query: String, filter: String, start: Number = 0, rows: Numb
             edismax: {
                 query,
                 qf: `${NAME_FIELD}^10 ${PLAINTEXT_FIELD}^5`,
-                mm: "60%"
+                mm: "100%"
             },
         },
     });
 }
 
-const getSuggestion = async (query: String) => {
+const getSuggestion = async (query: String, setData: Function = () => {}) => {
     const response = await postSolrRequest("spell", {
         params: {
             wt: "json",
@@ -85,6 +91,7 @@ const getSuggestion = async (query: String) => {
         if(suggestion) return suggestion;
         return false;
     } catch {
+        setData([])
     }
 }
 
